@@ -7,11 +7,11 @@ const selectors = {
   userIdInput: 'input[name=user_id]',
   userPasswordInput: 'input[name=user_passwd]',
   userHistoryCheckbox: 'input[name=HSTRYRUSR]',
-  submitButton: 'button[name=submit]',
+  submitButton: 'button[type=submit],button[name=submit]',
 }
 
 const urls = {
-  login: 'https://glogin.rms.rakuten.co.jp',
+  login: 'https://glogin.rms.rakuten.co.jp/?sp_id=1',
 }
 
 /**
@@ -22,7 +22,7 @@ const urls = {
  * @param shopPassword {String} RMS shop password.
  * @param userId {String} Rakuten id.
  * @param userPassword {String} Rakuten password.
- * @returns {Promise<import("puppeteer/lib/Page").Page>}
+ * @returns {Promise<void>}
  */
 async function login (page, shopId, shopPassword, userId, userPassword) {
   await page.goto(urls.login, { waitUntil: 'networkidle2' })
@@ -30,18 +30,26 @@ async function login (page, shopId, shopPassword, userId, userPassword) {
   await page.type(selectors.loginIdInput, shopId)
   await page.type(selectors.passwordInput, shopPassword)
   await page.click(selectors.historyCheckbox)
-  await Promise.all([
-    page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-    page.click(selectors.submitButton)
-  ])
+  await submit(page)
 
   await page.type(selectors.userIdInput, userId)
   await page.type(selectors.userPasswordInput, userPassword)
   await page.click(selectors.userHistoryCheckbox)
-  await Promise.all([
+  await submit(page)
+
+  await submit(page)
+  await submit(page)
+}
+
+/**
+ * Wait for page transition by clicking the submit button.
+ *
+ * @param page {import("puppeteer/lib/Page").Page} Puppeteer page instance.
+ * @returns {Promise<void>}
+ */
+function submit(page) {
+  return Promise.all([
     page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
     page.click(selectors.submitButton)
   ])
-
-  return page
 }
