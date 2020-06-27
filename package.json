@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Login to RMS with puppeteer.",
   "scripts": {
-    "test": "mocha test.js --timeout 60000"
+    "test": "mocha test.js"
   },
   "main": "index.js",
   "author": "Yuto Kawamoto",
