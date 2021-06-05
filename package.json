@@ -6,6 +6,7 @@
     "test": "mocha test.js"
   },
   "main": "index.js",
+  "repository": "https://github.com/go-hd/rms.login.git",
   "author": "Yuto Kawamoto",
   "license": "MIT",
   "devDependencies": {
